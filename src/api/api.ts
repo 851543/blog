@@ -26,7 +26,7 @@ export default {
     return axios.get('/api/blog/article/tagId', { params: params })
   },
   getAllArchives: (params: any) => {
-    return axios.get('/api/archives/all', { params: params })
+    return axios.get('/api/blog/article/archives/list', { params: params })
   },
   login: (params: any) => {
     return axios.post('/api/users/login', params)
@@ -41,10 +41,10 @@ export default {
     return axios.get('/api/comments/topSix')
   },
   getAbout: () => {
-    return axios.get('/api/about')
+    return axios.get('/api/blog/website/about')
   },
   getFriendLink: () => {
-    return axios.get('/api/links')
+    return axios.get('/api/blog/link/links')
   },
   submitUserInfo: (params: any) => {
     return axios.put('/api/users/info', params)
@@ -82,7 +82,7 @@ export default {
     })
   },
   getWebsiteConfig: () => {
-    return axios.get('/api')
+    return axios.get('/api/blog/website/')
   },
   qqLogin: (params: any) => {
     return axios.post('/api/users/oauth/qq', params)
