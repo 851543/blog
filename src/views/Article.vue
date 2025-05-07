@@ -27,21 +27,14 @@
         <h1 v-if="article.articleTitle" class="post-title text-white">
           {{ article.articleTitle }}
         </h1>
-        <ob-skeleton
-          v-else
-          class="post-title text-white uppercase"
-          width="100%"
+        <ob-skeleton v-else class="post-title text-white uppercase" width="100%"
           height="clamp(1.2rem, calc(1rem + 3.5vw), 4rem)" />
         <div class="flex flex-row items-center justify-start mt-8 mb-4">
           <div class="post-footer" v-if="article.author">
-            <img
-              class="hover:opacity-50 cursor-pointer"
-              v-lazy="article.author.avatar || ''"
-              alt="author avatar"
-              @click="handleAuthorClick(article.author.website)" />
+            <img class="hover:opacity-50 cursor-pointer" v-lazy="AvatarImage(article.author.avatar) || ''"
+              alt="author avatar" @click="handleAuthorClick(article.author.website)" />
             <span class="text-white opacity-80">
-              <strong
-                class="text-white pr-1.5 hover:opacity-50 cursor-pointer"
+              <strong class="text-white pr-1.5 hover:opacity-50 cursor-pointer"
                 @click="handleAuthorClick(article.author.website)">
                 {{ article.author.nickname }}
               </strong>
@@ -166,6 +159,7 @@ import emitter from '@/utils/mitt'
 import { v3ImgPreviewFn } from 'v3-img-preview'
 import api from '@/api/api'
 import markdownToHtml from '@/utils/markdown'
+import { AvatarImage } from '@/utils/utils'
 
 export default defineComponent({
   name: 'Article',
@@ -372,7 +366,8 @@ export default defineComponent({
       isMobile: computed(() => commonStore.isMobile),
       handleAuthorClick,
       loading,
-      t
+      t,
+      AvatarImage
     }
   }
 })
@@ -382,24 +377,29 @@ export default defineComponent({
   word-wrap: break-word;
   word-break: break-all;
 }
+
 #toc1 {
   max-height: 470px;
   overflow: hidden scroll;
 }
-#toc1 > ol {
+
+#toc1>ol {
   list-style: none;
   counter-reset: li;
   padding-left: 1.5rem;
 
-  > li {
+  >li {
     @apply font-medium pb-1;
-    &.is-active-li > .node-name--H1 {
+
+    &.is-active-li>.node-name--H1 {
       @apply text-ob;
     }
-    &.is-active-li > .node-name--H2 {
+
+    &.is-active-li>.node-name--H2 {
       @apply text-ob;
     }
-    &.is-active-li > .node-name--H3 {
+
+    &.is-active-li>.node-name--H3 {
       @apply text-ob;
     }
   }
@@ -407,15 +407,19 @@ export default defineComponent({
   ol li {
     @apply font-medium mt-1.5 mb-1.5;
     padding-left: 1.5rem;
-    &.is-active-li > .node-name--H2 {
+
+    &.is-active-li>.node-name--H2 {
       @apply text-ob;
     }
-    &.is-active-li > .node-name--H3 {
+
+    &.is-active-li>.node-name--H3 {
       @apply text-ob;
     }
+
     ol li {
       @apply font-medium mt-1.5 mb-1.5;
       padding-left: 1.5rem;
+
       &.is-active-li .node-name--H3 {
         @apply text-ob;
       }
@@ -427,11 +431,11 @@ export default defineComponent({
     position: relative;
   }
 
-  > li::before,
-  ol > li::before,
-  ol ol > li::before,
-  ol ol ol > li::before,
-  ol ol ol ol > li::before {
+  >li::before,
+  ol>li::before,
+  ol ol>li::before,
+  ol ol ol>li::before,
+  ol ol ol ol>li::before {
     content: '•';
     color: var(--text-accent);
     display: inline-block;
@@ -442,12 +446,12 @@ export default defineComponent({
     text-shadow: 0 0 0.5em var(--accent-2);
   }
 
-  > li::before {
+  >li::before {
     @apply text-xl;
   }
 
-  > li > ol::before,
-  > li > ol > li > ol::before {
+  >li>ol::before,
+  >li>ol>li>ol::before {
     content: '';
     border-left: 1px solid var(--text-accent);
     position: absolute;
@@ -457,11 +461,12 @@ export default defineComponent({
     bottom: 0;
   }
 
-  > li > ol::before {
+  >li>ol::before {
     left: -1.25em;
     border-left: 2px solid var(--text-accent);
   }
 }
+
 .pre-and-next-article {
   .article-content {
     p {
@@ -471,11 +476,13 @@ export default defineComponent({
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
     }
+
     .article-footer {
       margin-top: 13px;
     }
   }
 }
+
 .markdown-body .hljs-center {
   text-align: center;
   display: flex;

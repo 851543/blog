@@ -51,7 +51,7 @@
           <div class="flex flex-row items-center">
             <img
               class="hover:opacity-50 cursor-pointer"
-              :src="article.author.avatar || ''"
+              :src="AvatarImage(article.author.avatar) || ''"
               alt="author avatar"
               @click="handleAuthorClick(article.author.website)" />
             <span class="text-ob-dim">
@@ -85,6 +85,7 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import emitter from '@/utils/mitt'
+import { AvatarImage } from '@/utils/utils' // 确保 AvatarImage 被正确导入
 
 export default defineComponent({
   name: 'ArticleCard',
@@ -127,7 +128,8 @@ export default defineComponent({
       article: toRefs(props).data,
       handleAuthorClick,
       toArticle,
-      t
+      t,
+      AvatarImage // 确保 AvatarImage 在返回对象中
     }
   }
 })
