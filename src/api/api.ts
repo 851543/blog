@@ -1,4 +1,3 @@
-import config from '@/config/config'
 import axios from 'axios'
 
 export default {
@@ -67,7 +66,7 @@ export default {
     return axios.put('api/system/user/profile/blog/bind/email', params)
   },
   register: (params: any) => {
-    return axios.post('/api/users/register', params)
+    return axios.post('/api/blog/register', params)
   },
   searchArticles: (params: any) => {
     return axios.get('/api/blog/article/search', {
@@ -106,7 +105,7 @@ export default {
     return axios.get(`/api/blog/comment/comments/${commentId}/replies`)
   },
   updatePassword: (params: any) => {
-    return axios.put('/api/users/password', params)
+    return axios.post('/api/forgetPwd', params)
   },
   accessArticle: (params: any) => {
     return axios.post('/api/blog/article/access', params)

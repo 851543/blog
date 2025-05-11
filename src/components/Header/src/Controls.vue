@@ -183,8 +183,9 @@ export default defineComponent({
         return
       }
       api.login({ 'username': loginInfo.username, 'password': loginInfo.password }).then(({ data }) => {
-        if (data.code=== 200) {
+        if (data.code === 200) {
           api.getUserInfo().then(({ data }) => {
+            data.user.avatar =  data.user.avatar ? data.user.avatar : appStore.websiteConfig.userAvatar
             userStore.userInfo = data.user
           })
           sessionStorage.setItem('token', data.token)
@@ -200,7 +201,7 @@ export default defineComponent({
     }
     const logout = () => {
       api.logout().then(({ data }) => {
-        if (data.code=== 200) {
+        if (data.code === 200) {
           userStore.userInfo = ''
           userStore.token = ''
           userStore.accessArticles = []
@@ -236,7 +237,7 @@ export default defineComponent({
     }
     const sendCode = () => {
       api.sendValidationCode(loginInfo.username).then(({ data }) => {
-        if (data.code=== 200) {
+        if (data.code === 200) {
           proxy.$notify({
             title: 'Success',
             message: '验证码已发送',
@@ -252,7 +253,7 @@ export default defineComponent({
         password: loginInfo.password
       }
       api.register(params).then(({ data }) => {
-        if (data.code=== 200) {
+        if (data.code === 200) {
           proxy.$notify({
             title: 'Success',
             message: '注册成功',
@@ -287,8 +288,8 @@ export default defineComponent({
       }
     }
     const updatePassword = () => {
-      api.updatePassword(loginInfo).then(({ data }) => {
-        if (data.code=== 200) {
+      api.updatePassword({ email: loginInfo.username, password: loginInfo.password, verifyCode: loginInfo.code }).then(({ data }) => {
+        if (data.code === 200) {
           proxy.$notify({
             title: 'Success',
             message: '修改成功',
@@ -314,7 +315,7 @@ export default defineComponent({
           articlePassword: reactiveDate.articlePassword
         })
         .then(({ data }) => {
-          if (data.code=== 200) {
+          if (data.code === 200) {
             reactiveDate.articlePasswordDialogVisible = false
             userStore.accessArticles.push(reactiveDate.articleId)
             router.push({ path: '/articles/' + reactiveDate.articleId })

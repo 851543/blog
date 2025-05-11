@@ -82,6 +82,6 @@ export const useAppStore = defineStore('appStore', {
       this.loadingTimeout = <any>setTimeout(() => {
         this.appLoading = false
       }, 300)
-    }
+    },
   }
 })
