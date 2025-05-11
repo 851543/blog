@@ -9,11 +9,11 @@
           :key="comment.id">
           <div class="flex-shrink-0 mr-2">
             <div class="rounded-full ring-gray-100 overflow-hidden shaodw-lg w-9">
-              <template v-if="comment.avatar != null">
-                <img class="avatar-img" :src="comment.avatar" alt="" />
+              <template v-if="AvatarImage(comment.avatar) != null">
+                <img class="avatar-img" :src="AvatarImage(comment.avatar)" alt="" />
               </template>
               <template v-else>
-                <img class="avatar-img" :src="default" alt="" />
+                <img class="avatar-img" :src="'@/assets/default-cover.jpg'" alt="" />
               </template>
             </div>
           </div>
@@ -40,6 +40,8 @@ import { SubTitle } from '@/components/Title'
 import { useCommentStore } from '@/stores/comment'
 import { useI18n } from 'vue-i18n'
 import api from '@/api/api'
+import { AvatarImage } from '@/utils/utils'
+
 
 export default defineComponent({
   name: 'RecentComment',
@@ -70,8 +72,8 @@ export default defineComponent({
     }
     return {
       comments: toRef(commentStore.$state, 'recentComment'),
-      default: 'https://static.linhaojun.top/aurora/config/0af1901da1e64dfb99bb61db21e716c4.jpeg',
-      t
+      t,
+      AvatarImage
     }
   }
 })

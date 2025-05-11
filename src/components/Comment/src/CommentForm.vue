@@ -1,6 +1,6 @@
 <template>
   <div class="flex space-x-3 xl:space-x-5">
-    <Avatar :url="avatar" />
+    <Avatar :url="AvatarImage(avatar)" />
     <div class="comment flex flex-col flex-wrap-reverse w-full max-w-full-calc">
       <textarea
         v-model="commentContent"
@@ -30,6 +30,8 @@ import { useCommentStore } from '@/stores/comment'
 import { useAppStore } from '@/stores/app'
 import api from '@/api/api'
 import emitter from '@/utils/mitt'
+import { AvatarImage } from '@/utils/utils'
+
 
 export default defineComponent({
   name: 'CommentItem',
@@ -68,7 +70,7 @@ export default defineComponent({
       }
       params.topicId = arr[2]
       api.saveComment(params).then(({ data }) => {
-        if (data) {
+        if (data.code=== 200) {
           fetchComments()
           let isCommentReview = appStore.websiteConfig.isCommentReview
           if (isCommentReview) {
@@ -109,7 +111,8 @@ export default defineComponent({
     return {
       ...toRefs(reactiveData),
       avatar: computed(() => userStore.userInfo.avatar),
-      saveComment
+      saveComment,
+      AvatarImage
     }
   }
 })

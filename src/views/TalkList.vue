@@ -12,7 +12,7 @@
             v-for="item in talks"
             :key="item.id"
             @click="toTalk(item.id)">
-            <Avatar :url="item.avatar" />
+            <Avatar :url="AvatarImage(item.avatar)" />
             <div class="talk-info">
               <div class="user-nickname text-sm">
                 {{ item.nickname }}
@@ -68,6 +68,8 @@ import Avatar from '../components/Avatar.vue'
 import { v3ImgPreviewFn } from 'v3-img-preview'
 import { useRouter } from 'vue-router'
 import api from '@/api/api'
+import { AvatarImage } from '@/utils/utils'
+
 
 export default defineComponent({
   name: 'talkList',
@@ -132,7 +134,8 @@ export default defineComponent({
       pageChangeHanlder,
       handlePreview,
       toTalk,
-      t
+      t,
+      AvatarImage
     }
   }
 })

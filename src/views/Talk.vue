@@ -8,7 +8,7 @@
         <div class="main-grid">
           <div class="relative space-y-5">
             <div class="bg-ob-deep-800 flex p-4 lg:p-8 rounded-2xl shadow-xl mb-8 lg:mb-0">
-              <Avatar v-if="talk.avatar" :url="talk.avatar" />
+              <Avatar v-if="AvatarImage(talk.avatar)" :url="AvatarImage(talk.avatar)" />
               <div class="talk-info">
                 <div class="user-nickname text-sm">
                   {{ talk.nickname }}
@@ -60,6 +60,8 @@ import { useCommentStore } from '@/stores/comment'
 import { v3ImgPreviewFn } from 'v3-img-preview'
 import emitter from '@/utils/mitt'
 import api from '@/api/api'
+import { AvatarImage } from '@/utils/utils'
+
 
 export default defineComponent({
   name: 'talks',
@@ -162,7 +164,8 @@ export default defineComponent({
       ...toRefs(reactiveData),
       handlePreview,
       formatTime,
-      t
+      t,
+      AvatarImage
     }
   }
 })

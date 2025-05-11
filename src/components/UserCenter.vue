@@ -5,24 +5,20 @@
       <span class="text font-medium">(该页面的信息,本网站将严格保密)</span>
       <div class="max-w-full mt-10">
         <button id="pick-avatar" @click="showCropper = true">
-          <el-avatar :size="110" :src="userInfo.avatar" class="ml-40" />
+          <el-avatar :size="110" :src="AvatarImage(userInfo.avatar)" class="ml-40" />
         </button>
-        <avatar-cropper
-          v-model="showCropper"
-          @uploaded="handleSuccess"
-          trigger="#pick-avatar"
-          :request-options="options"
-          upload-url="/api/users/avatar" />
+        <avatar-cropper v-model="showCropper" @uploaded="handleSuccess" trigger="#pick-avatar"
+          :request-options="options" upload-url="/api/system/user/profile/blog/avatar" />
         <el-form>
           <el-form-item model="userInfo" label="昵称:" class="mt-5">
-            <el-input v-model="userInfo.nickname" />
+            <el-input v-model="userInfo.nickName" />
           </el-form-item>
           <el-form-item model="userInfo" label="网址:" class="mt-5">
             <el-input v-model="userInfo.website" placeholder="Please add https:// or http://" />
           </el-form-item>
-          <el-form-item model="userInfo" label="描述:" class="mt-5">
+          <!-- <el-form-item model="userInfo" label="描述:" class="mt-5">
             <el-input v-model="userInfo.intro" placeholder="Introduce youself" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item model="userInfo" label="邮箱:" class="mt-5">
             <el-input disabled :placeholder="userInfo.email">
               <template #append v-if="userInfo.email === null">
@@ -33,20 +29,11 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="订阅:">
-            <el-switch
-              v-model="userInfo.isSubscribe"
-              :loading="loading"
-              :before-change="beforeChange"
-              @change="changeSubscribe"
-              active-color="#0fb6d6"
-              :active-value="1"
-              :inactive-value="0" />
-          </el-form-item>
-          <button
-            @click="commit"
-            type="button"
-            id="submit-button"
+          <!-- <el-form-item label="订阅:">
+            <el-switch v-model="userInfo.isSubscribe" :loading="loading" :before-change="beforeChange"
+              @change="changeSubscribe" active-color="#0fb6d6" :active-value="1" :inactive-value="0" />
+          </el-form-item> -->
+          <button @click="commit" type="button" id="submit-button"
             class="mt-5 w-20 text-white p-2 rounded-lg transition transform hover:scale-105 flex float-right">
             <span class="text-center flex-grow commit">提交</span>
           </button>
@@ -82,6 +69,7 @@ import { defineComponent, toRef, ref, reactive, toRefs, getCurrentInstance, comp
 import { useUserStore } from '@/stores/user'
 import AvatarCropper from 'vue-avatar-cropper'
 import api from '@/api/api'
+import { AvatarImage } from '@/utils/utils'
 
 export default defineComponent({
   name: 'UserCenter',
@@ -110,7 +98,7 @@ export default defineComponent({
         code: reactiveData.VerificationCode
       }
       api.bindingEmail(params).then(({ data }) => {
-        if (data) {
+        if (data.code === 200) {
           proxy.$notify({
             title: 'Success',
             message: '绑定成功',
@@ -123,8 +111,9 @@ export default defineComponent({
     }
     const handleSuccess = (data: any) => {
       data.response.json().then((data: any) => {
-        if (data) {
-          userStore.userInfo.avatar = data.data
+        console.log(data)
+        if (data.code === 200) {
+          userStore.userInfo.avatar = data.msg
           proxy.$notify({
             title: 'Success',
             message: '上传成功',
@@ -140,7 +129,7 @@ export default defineComponent({
           isSubscribe: userStore.userInfo.isSubscribe
         }
         api.updateUserSubscribe(params).then(({ data }) => {
-          if (data) {
+          if (data.code === 200) {
             proxy.$notify({
               title: 'Success',
               message: '修改成功',
@@ -152,12 +141,10 @@ export default defineComponent({
     }
     const commit = () => {
       let params = {
-        nickname: userStore.userInfo.nickname,
-        website: userStore.userInfo.website,
-        intro: userStore.userInfo.intro
+        ...userStore.userInfo
       }
       api.submitUserInfo(params).then(({ data }) => {
-        if (data) {
+        if (data.code === 200) {
           proxy.$notify({
             title: 'Success',
             message: '修改成功',
@@ -168,7 +155,7 @@ export default defineComponent({
     }
     const sendCode = () => {
       api.sendValidationCode(reactiveData.email).then(({ data }) => {
-        if (data) {
+        if (data.code === 200) {
           proxy.$notify({
             title: 'Success',
             message: '验证码已发送',
@@ -208,6 +195,7 @@ export default defineComponent({
       sendCode,
       commit,
       beforeChange,
+      AvatarImage,
       options: computed(() => {
         return {
           method: 'POST',
@@ -225,10 +213,12 @@ export default defineComponent({
   outline: none;
   background: #0fb6d6;
 }
+
 .text {
   color: var(--text-normal);
   cursor: pointer;
 }
+
 #pick-avatar {
   outline: none;
 }
@@ -239,13 +229,16 @@ export default defineComponent({
   width: 70px;
   color: var(--text-normal) !important;
 }
+
 .el-input__inner {
   color: var(--text-normal) !important;
   background-color: var(--background-primary-alt) !important;
 }
+
 .el-input__wrapper {
   background: var(--background-primary-alt) !important;
 }
+
 .bangding-button {
   outline: none !important;
 }

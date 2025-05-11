@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex space-x-3 xl:space-x-5">
-      <Avatar :url="reply.avatar" />
+      <Avatar :url="AvatarImage(reply.avatar)" />
       <div class="reply bg-white flex flex-col p-3 rounded-md relative shadow-md">
         <p class="commentContent" v-html="commentContent.replaceAll('\n', '<br>')" />
         <div class="flex justify-between mt-2 text-xs text-gray-400 space-x-3 md:space-x-16">
@@ -26,6 +26,8 @@
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 import Avatar from '@/components/Avatar.vue'
 import CommentReplyForm from './CommentReplyForm.vue'
+import { AvatarImage } from '@/utils/utils'
+
 
 export default defineComponent({
   components: {
@@ -67,7 +69,8 @@ export default defineComponent({
       ...toRefs(reactiveData),
       commentContent,
       clickOnSonReply,
-      changeShow
+      changeShow,
+      AvatarImage
     }
   }
 })

@@ -159,7 +159,7 @@ export default defineComponent({
             size: pagination.size
           })
           .then(({ data }) => {
-            if (data) {
+            if (data.code=== 200) {
               data.data.records.forEach((item: any) => {
                 item.articleContent = markdownToHtml(item.articleContent)
                   .replace(/<\/?[^>]*>/g, '')

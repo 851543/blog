@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5 max-w-full">
     <div class="flex space-x-3 xl:space-x-5">
-      <Avatar :url="comment.avatar" />
+      <Avatar :url="AvatarImage(comment.avatar)" />
       <div class="max-w-full-calc space-y-5">
         <div class="bg-white text-primary p-4 rounded-md relative shadow-md reply" style="width: fit-content">
           <p class="commentContent" v-html="comment.commentContent.replaceAll('\n', '<br>')" />
@@ -34,6 +34,8 @@ import { defineComponent, reactive, ref, toRefs, provide } from 'vue'
 import Avatar from '@/components/Avatar.vue'
 import CommentReplyItem from './CommentReplyItem.vue'
 import CommentReplyForm from './CommentReplyForm.vue'
+import { AvatarImage } from '@/utils/utils'
+
 
 export default defineComponent({
   components: {
@@ -68,7 +70,8 @@ export default defineComponent({
     return {
       ...toRefs(reactiveData),
       clickOnReply,
-      changeShow
+      changeShow,
+      AvatarImage
     }
   }
 })

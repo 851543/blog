@@ -1,3 +1,4 @@
+import config from '@/config/config'
 import axios from 'axios'
 
 export default {
@@ -29,7 +30,10 @@ export default {
     return axios.get('/api/blog/article/archives/list', { params: params })
   },
   login: (params: any) => {
-    return axios.post('/api/login', params)
+    return axios.post('/api/login', params, )
+  },
+  getUserInfo(){
+    return axios.get('/api/getInfo')
   },
   saveComment: (params: any) => {
     return axios.post('/api/blog/comment/comments/save', params)
@@ -47,23 +51,20 @@ export default {
     return axios.get('/api/blog/link/links')
   },
   submitUserInfo: (params: any) => {
-    return axios.put('/api/users/info', params)
-  },
-  getUserInfoById: (id: any) => {
-    return axios.get('/api/users/info/' + id)
+    return axios.put('/api/system/user/profile', params)
   },
   updateUserSubscribe: (params: any) => {
     return axios.put('/api/users/subscribe', params)
   },
   sendValidationCode: (username: any) => {
-    return axios.get('/api/users/code', {
+    return axios.get('/api/blog/mailCode', {
       params: {
         username: username
       }
     })
   },
   bindingEmail: (params: any) => {
-    return axios.put('/api/users/email', params)
+    return axios.put('api/system/user/profile/blog/bind/email', params)
   },
   register: (params: any) => {
     return axios.post('/api/users/register', params)
@@ -99,7 +100,7 @@ export default {
     return axios.get('/api/blog/talk/talks/' + id)
   },
   logout: () => {
-    return axios.post('/api/users/logout')
+    return axios.post('/api/logout')
   },
   getRepliesByCommentId: (commentId: any) => {
     return axios.get(`/api/blog/comment/comments/${commentId}/replies`)

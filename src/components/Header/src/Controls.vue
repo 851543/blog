@@ -22,7 +22,7 @@
         <span class="mr-2">
           <div class="flex-shrink-0">
             <div class="rounded-full ring-gray-100 overflow-hidden shaodw-lg w-9">
-              <img class="avatar-img" :src="userInfo.avatar" alt="" />
+              <img class="avatar-img" :src="AvatarImage(userInfo.avatar)" alt="" />
             </div>
           </div>
         </span>
@@ -129,6 +129,7 @@ import { useSearchStore } from '@/stores/search'
 import config from '@/config/config'
 import { useI18n } from 'vue-i18n'
 import emitter from '@/utils/mitt'
+import { AvatarImage } from '@/utils/utils'
 
 export default defineComponent({
   name: 'Controls',
@@ -182,10 +183,12 @@ export default defineComponent({
         return
       }
       api.login({ 'username': loginInfo.username, 'password': loginInfo.password }).then(({ data }) => {
-        if (data) {
-          userStore.userInfo = data.data
-          sessionStorage.setItem('token', data.data.token)
-          userStore.token = data.data.token
+        if (data.code=== 200) {
+          api.getUserInfo().then(({ data }) => {
+            userStore.userInfo = data.user
+          })
+          sessionStorage.setItem('token', data.token)
+          userStore.token = data.token
           proxy.$notify({
             title: 'Success',
             message: '登录成功',
@@ -197,7 +200,7 @@ export default defineComponent({
     }
     const logout = () => {
       api.logout().then(({ data }) => {
-        if (data) {
+        if (data.code=== 200) {
           userStore.userInfo = ''
           userStore.token = ''
           userStore.accessArticles = []
@@ -233,7 +236,7 @@ export default defineComponent({
     }
     const sendCode = () => {
       api.sendValidationCode(loginInfo.username).then(({ data }) => {
-        if (data) {
+        if (data.code=== 200) {
           proxy.$notify({
             title: 'Success',
             message: '验证码已发送',
@@ -249,7 +252,7 @@ export default defineComponent({
         password: loginInfo.password
       }
       api.register(params).then(({ data }) => {
-        if (data) {
+        if (data.code=== 200) {
           proxy.$notify({
             title: 'Success',
             message: '注册成功',
@@ -285,7 +288,7 @@ export default defineComponent({
     }
     const updatePassword = () => {
       api.updatePassword(loginInfo).then(({ data }) => {
-        if (data) {
+        if (data.code=== 200) {
           proxy.$notify({
             title: 'Success',
             message: '修改成功',
@@ -311,7 +314,7 @@ export default defineComponent({
           articlePassword: reactiveDate.articlePassword
         })
         .then(({ data }) => {
-          if (data) {
+          if (data.code=== 200) {
             reactiveDate.articlePasswordDialogVisible = false
             userStore.accessArticles.push(reactiveDate.articleId)
             router.push({ path: '/articles/' + reactiveDate.articleId })
@@ -337,6 +340,7 @@ export default defineComponent({
       updatePassword,
       openForgetPasswordDialog,
       accessArticle,
+      AvatarImage,
       multiLanguage: computed(() => {
         let websiteConfig: any = appStore.websiteConfig
         return websiteConfig.multiLanguage
