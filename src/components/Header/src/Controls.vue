@@ -181,11 +181,8 @@ export default defineComponent({
         })
         return
       }
-      let params = new URLSearchParams()
-      params.append('username', loginInfo.username)
-      params.append('password', loginInfo.password)
-      api.login(params).then(({ data }) => {
-        if (data.flag) {
+      api.login({ 'username': loginInfo.username, 'password': loginInfo.password }).then(({ data }) => {
+        if (data) {
           userStore.userInfo = data.data
           sessionStorage.setItem('token', data.data.token)
           userStore.token = data.data.token
@@ -200,7 +197,7 @@ export default defineComponent({
     }
     const logout = () => {
       api.logout().then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           userStore.userInfo = ''
           userStore.token = ''
           userStore.accessArticles = []
@@ -236,7 +233,7 @@ export default defineComponent({
     }
     const sendCode = () => {
       api.sendValidationCode(loginInfo.username).then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           proxy.$notify({
             title: 'Success',
             message: '验证码已发送',
@@ -252,7 +249,7 @@ export default defineComponent({
         password: loginInfo.password
       }
       api.register(params).then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           proxy.$notify({
             title: 'Success',
             message: '注册成功',
@@ -279,16 +276,16 @@ export default defineComponent({
       } else {
         window.open(
           'https://graph.qq.com/oauth2.0/show?which=Login&display=pc&client_id=' +
-            +config.qqLogin.QQ_APP_ID +
-            '&response_type=token&scope=all&redirect_uri=' +
-            config.qqLogin.QQ_REDIRECT_URI,
+          +config.qqLogin.QQ_APP_ID +
+          '&response_type=token&scope=all&redirect_uri=' +
+          config.qqLogin.QQ_REDIRECT_URI,
           '_self'
         )
       }
     }
     const updatePassword = () => {
       api.updatePassword(loginInfo).then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           proxy.$notify({
             title: 'Success',
             message: '修改成功',
@@ -314,7 +311,7 @@ export default defineComponent({
           articlePassword: reactiveDate.articlePassword
         })
         .then(({ data }) => {
-          if (data.flag) {
+          if (data) {
             reactiveDate.articlePasswordDialogVisible = false
             userStore.accessArticles.push(reactiveDate.articleId)
             router.push({ path: '/articles/' + reactiveDate.articleId })
@@ -353,24 +350,30 @@ export default defineComponent({
 .my-el-button {
   width: 300px !important;
 }
+
 .el-button {
   width: 300px;
 }
+
 .el-dialog__headerbtn {
   outline: none !important;
 }
+
 .el-input-group__append {
   background-color: var(--background-primary-alt) !important;
 }
+
 .el-form-item__label {
   text-align: left;
   width: 70px;
   color: var(--text-normal) !important;
 }
+
 .el-input__inner {
   color: var(--text-normal) !important;
   background-color: var(--background-primary-alt) !important;
 }
+
 .el-input__wrapper {
   background: var(--background-primary-alt) !important;
 }
@@ -380,10 +383,12 @@ export default defineComponent({
   color: var(--text-normal);
   cursor: pointer;
 }
+
 #submit-button {
   outline: none;
   background: #0fb6d6;
 }
+
 .header-controls {
   span {
     display: flex;
@@ -393,14 +398,17 @@ export default defineComponent({
     cursor: pointer;
     transition: opacity 250ms ease;
     padding-right: 0.5rem;
+
     &[no-hover-effect] {
       &:hover {
         opacity: 1;
       }
     }
+
     &:hover {
       opacity: 0.5;
     }
+
     .svg-icon {
       stroke: #fff;
       height: 2rem;
@@ -409,40 +417,48 @@ export default defineComponent({
       pointer-events: none;
     }
   }
+
   .search-bar {
     @apply bg-transparent flex flex-row px-0 mr-2 rounded-full;
     opacity: 0;
     width: 0;
     transition: 300ms all ease-out;
+
     &.active {
       @apply bg-ob-deep-800;
       opacity: 0.95;
       width: 200px;
+
       imput {
         width: initial;
       }
     }
+
     &:focus {
       appearance: none;
       outline: none;
     }
+
     input {
       @apply flex flex-1 bg-transparent text-ob-normal px-6 box-border;
       width: 0;
       appearance: none;
       outline: none;
     }
+
     svg {
       @apply float-right;
     }
   }
 }
+
 .avatar-img {
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 800ms;
   transform: rotate(-360deg);
 }
+
 .avatar-img:hover {
   transform: rotate(360deg);
 }

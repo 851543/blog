@@ -110,7 +110,7 @@ export default defineComponent({
         code: reactiveData.VerificationCode
       }
       api.bindingEmail(params).then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           proxy.$notify({
             title: 'Success',
             message: '绑定成功',
@@ -123,7 +123,7 @@ export default defineComponent({
     }
     const handleSuccess = (data: any) => {
       data.response.json().then((data: any) => {
-        if (data.flag) {
+        if (data) {
           userStore.userInfo.avatar = data.data
           proxy.$notify({
             title: 'Success',
@@ -140,7 +140,7 @@ export default defineComponent({
           isSubscribe: userStore.userInfo.isSubscribe
         }
         api.updateUserSubscribe(params).then(({ data }) => {
-          if (data.flag) {
+          if (data) {
             proxy.$notify({
               title: 'Success',
               message: '修改成功',
@@ -157,7 +157,7 @@ export default defineComponent({
         intro: userStore.userInfo.intro
       }
       api.submitUserInfo(params).then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           proxy.$notify({
             title: 'Success',
             message: '修改成功',
@@ -168,7 +168,7 @@ export default defineComponent({
     }
     const sendCode = () => {
       api.sendValidationCode(reactiveData.email).then(({ data }) => {
-        if (data.flag) {
+        if (data) {
           proxy.$notify({
             title: 'Success',
             message: '验证码已发送',

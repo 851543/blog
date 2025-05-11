@@ -7,13 +7,17 @@ module.exports = defineConfig({
   transpileDependencies: true,
   productionSourceMap: false,
   devServer: {
+    port: 5208,
+    client: {
+      webSocketURL: 'ws://0.0.0.0:5208/ws'
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
-        }
+        },
       }
     }
   },

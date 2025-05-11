@@ -43,19 +43,19 @@ axios.interceptors.request.use((config: any) => {
 const proxy = app.config.globalProperties
 axios.interceptors.response.use(
   (response) => {
-    if (response.data.flag) {
+    if (response.data.code === 200) {
       return response
     }
     switch (response.data.code) {
-      case 50000: {
+      case 500: {
         proxy.$notify({
           title: 'Error',
-          message: '系统异常',
+          message: response.data.msg,
           type: 'error'
         })
         break
       }
-      case 40001: {
+      case 401: {
         proxy.$notify({
           title: 'Error',
           message: '用户未登录',

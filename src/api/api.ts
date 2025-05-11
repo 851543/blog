@@ -29,16 +29,16 @@ export default {
     return axios.get('/api/blog/article/archives/list', { params: params })
   },
   login: (params: any) => {
-    return axios.post('/api/users/login', params)
+    return axios.post('/api/login', params)
   },
   saveComment: (params: any) => {
-    return axios.post('/api/comments/save', params)
+    return axios.post('/api/blog/comment/comments/save', params)
   },
   getComments: (params: any) => {
-    return axios.get('/api/comments', { params: params })
+    return axios.get('/api/blog/comment/comments', { params: params })
   },
   getTopSixComments: () => {
-    return axios.get('/api/comments/topSix')
+    return axios.get('/api/blog/comment/comments/topSix')
   },
   getAbout: () => {
     return axios.get('/api/blog/website/about')
@@ -88,21 +88,21 @@ export default {
     return axios.post('/api/users/oauth/qq', params)
   },
   report: () => {
-    axios.post('/api/report')
+    axios.post('/api/blog/website/report')
   },
   getTalks: (params: any) => {
-    return axios.get('/api/talks', {
+    return axios.get('/api/blog/talk/talks', {
       params: params
     })
   },
   getTalkById: (id: any) => {
-    return axios.get('/api/talks/' + id)
+    return axios.get('/api/blog/talk/talks/' + id)
   },
   logout: () => {
     return axios.post('/api/users/logout')
   },
   getRepliesByCommentId: (commentId: any) => {
-    return axios.get(`/api/comments/${commentId}/replies`)
+    return axios.get(`/api/blog/comment/comments/${commentId}/replies`)
   },
   updatePassword: (params: any) => {
     return axios.put('/api/users/password', params)
