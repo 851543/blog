@@ -185,7 +185,7 @@ export default defineComponent({
       api.login({ 'username': loginInfo.username, 'password': loginInfo.password }).then(({ data }) => {
         if (data.code === 200) {
           api.getUserInfo().then(({ data }) => {
-            data.user.avatar =  data.user.avatar ? data.user.avatar : appStore.websiteConfig.userAvatar
+            data.user.avatar = data.user.avatar ? data.user.avatar : appStore.websiteConfig.userAvatar
             userStore.userInfo = data.user
           })
           sessionStorage.setItem('token', data.token)
@@ -248,9 +248,11 @@ export default defineComponent({
     }
     const register = () => {
       let params = {
-        code: loginInfo.code,
+        verifyCode: loginInfo.code,
         username: loginInfo.username,
-        password: loginInfo.password
+        password: loginInfo.password,
+        confirmPassword: loginInfo.password,
+        email: loginInfo.username
       }
       api.register(params).then(({ data }) => {
         if (data.code === 200) {
